@@ -130,20 +130,20 @@ def export(objs,filename):
         else:
             with builtin.open(tempfilepath, 'rb') as f_in, gzip.open(tempnamefpath, 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
-            if 0: #os.path.exists(outfpath):
-                sayzw("File cannot be compressed because a file with the same name exists '"+ outfpath + "'")
-                QtGui.qApp.restoreOverrideCursor()
-                reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+outfpath+ "'")
-            else:
+            if os.path.exists(outfpath):
+            #    sayzw("File cannot be compressed because a file with the same name exists '"+ outfpath + "'")
+            #    QtGui.qApp.restoreOverrideCursor()
+            #    reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+outfpath+ "'")
+            #else:
                 try:
                     os.remove(outfpath)
                 except OSError:
                     sayzerr("error on removing "+outfpath+" file")
                     pass        
-                os.rename(tempnamefpath, outfpath)  
-                try:
-                    os.remove(tempfilepath)
-                except OSError:
-                    sayzerr("error on removing "+tempfilepath+"file")
-                    pass        
+            os.rename(tempnamefpath, outfpath)  
+            try:
+                os.remove(tempfilepath)
+            except OSError:
+                sayzerr("error on removing "+tempfilepath+"file")
+                pass        
 ####
