@@ -10,8 +10,8 @@ StpZ
 
 Example file:
 -------------
-* ####[as1-oc-214.stp uncompressed file size: 432K](example/as1-oc-214.stp)
-* ####[as1-oc-214.stpZ compressed file size: 32K](example/as1-oc-214.stpZ)
+* #### [as1-oc-214.stp uncompressed file size: 432K](example/as1-oc-214.stp)
+* #### [as1-oc-214.stpZ compressed file size: 32K](example/as1-oc-214.stpZ)
 
 
 Reference @ CAX-if
