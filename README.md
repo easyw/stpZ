@@ -1,11 +1,11 @@
-StepZ: Import Export compressed STEP files for FreeCAD
-======================================================
+stpZ: Import and Export compressed STEP files Module for FreeCAD
+================================================================
 
 
 StpZ
 ----
 
-### Import Export compressed STEP files '.stpZ' for FreeCAD
+### Import Export compressed STEP files '.stpZ' Module for FreeCAD
 
 
 Example file:
