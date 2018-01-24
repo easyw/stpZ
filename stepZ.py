@@ -7,15 +7,17 @@
 #*                                                                          *
 #*                                                                          *
 
+# workaround for unicode in gzipping filename
+
 import FreeCAD,FreeCADGui
 import gzip, shutil
-import sys, os
+import sys, os, re
 import ImportGui
 import PySide
 from PySide import QtGui, QtCore
 import tempfile
 
-___stpZversion___ = "1.1"
+___stpZversion___ = "1.2"
 
 try:
     import __builtin__ as builtin #py2
@@ -34,6 +36,20 @@ def mkz_string(input):
     else:  #py2
         if type(input) == unicode:
             input =  input.encode('utf-8')
+            return input
+        else:
+            return input
+####
+def mkz_unicode(input):
+    if (sys.version_info > (3, 0)):  #py3
+        if isinstance(input, str):
+            return input
+        else:
+            input =  input.decode('utf-8')
+            return input
+    else: #py2
+        if type(input) != unicode:
+            input =  input.decode('utf-8')
             return input
         else:
             return input
@@ -109,14 +125,27 @@ def export(objs,filename):
     fname=os.path.splitext(os.path.basename(filename))[0]
     basepath=os.path.split(filename)[0]
     tempdir = tempfile.gettempdir() # get the current temporary directory
-    filepath = os.path.join(basepath,fname + u'.stp')
-    tempfilepath = os.path.join(tempdir,fname + u'.stp')
+    
+    filepath = os.path.join(basepath,fname) + u'.stp'
+    filepath_base  = os.path.join(basepath,fname)
+    tempfilepath = os.path.join(tempdir,fname) + u'.stp'
+    tempfilepath_2 = os.path.join(tempdir,fname) + u'_2.stp'
+    #tempfilepath_base = os.path.join(tempdir,fname)
     
     namefpath = os.path.join(basepath,fname)
-    tempnamefpath = os.path.join(tempdir,fname)
+    tempnamefpath = mkz_string(os.path.join(tempdir,fname)) #.encode('utf-8') #gzip has issue with utf8 in file name header
+    #tempnamefpath_2 = os.path.join(tempdir,fname).encode('utf-8') #gzip has issue with utf8 in file name header
+    #tempnamefpath = os.path.join(tempdir,'tmpstpZ_file')
     
-    outfpath = os.path.join(basepath,fname + u'.stpZ')
+    testnamefpath_1 = os.path.join(basepath,fname)+u'_mod.stp'
+    testnamefpath_1_base = os.path.join(basepath,fname)
+    testnamefpath_2 = os.path.join(basepath,fname)+u'_std.stp'
+    testnamefpath_2_base = os.path.join(basepath,fname)
     
+    outfpath = os.path.join(basepath,fname)+u'.stpZ'
+    outfpath_base = os.path.join(basepath,fname)
+    
+        
     if 0: #os.path.exists(filepath):
         sayzw("File cannot be compressed because a file with the same name exists '"+ filepath +"'")
         QtGui.qApp.restoreOverrideCursor()
@@ -128,8 +157,34 @@ def export(objs,filename):
             QtGui.qApp.restoreOverrideCursor()
             reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+ namefpath+ "'")
         else:
-            with builtin.open(tempfilepath, 'rb') as f_in, gzip.open(tempnamefpath, 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
+            # with builtin.open(tempfilepath, 'rb') as f_in, gzip.open(tempnamefpath, 'wb') as f_out:
+            #     shutil.copyfileobj(f_in, f_out)
+            # with builtin.open(tempfilepath, 'rb') as f_in, builtin.open(testnamefpath_2, 'wb') as f_out:
+            #     shutil.copyfileobj(f_in, f_out)
+            
+            if 0:
+                with builtin.open(testnamefpath_1, 'wb') as f_out:
+                    f_out.write(new_f_content)
+                    
+                with builtin.open(testnamefpath_1, 'rb') as f_in, gzip.open(tempnamefpath, 'wb') as f_out:
+                    shutil.copyfileobj(f_in, f_out)
+
+            with builtin.open(tempfilepath, 'rb') as f_in:
+                file_content = f_in.read()
+                #new_f_content = file_content.replace('FreeCAD', 'MCAD')
+                ##workaround utf8 in file name
+                new_f_content = re.sub('FILE_NAME\((.+?).stp\'','FILE_NAME(\''+mkz_string(fname)+'.stp\'',new_f_content, flags=re.MULTILINE) #.encode('utf-8')+'.stp\'',new_f_content, flags=re.MULTILINE)
+                
+            with builtin.open(tempfilepath_2, 'wb') as f_out:
+                    f_out.write(new_f_content)
+
+            with builtin.open(tempfilepath_2, 'rb') as f_in, gzip.open(tempnamefpath, 'wb') as f_out:
+                    shutil.copyfileobj(f_in, f_out)
+            
+                
+            #with gzip.open(testnamefpath_1, 'wb') as f_out:
+            #    f_out.write(new_f_content)
+            
             if os.path.exists(outfpath):
             #    sayzw("File cannot be compressed because a file with the same name exists '"+ outfpath + "'")
             #    QtGui.qApp.restoreOverrideCursor()
@@ -147,6 +202,11 @@ def export(objs,filename):
                 os.remove(tempfilepath)
             except OSError:
                 sayzerr("error on removing "+tempfilepath+"file")
+                pass        
+            try:
+                os.remove(tempfilepath_2)
+            except OSError:
+                sayzerr("error on removing "+tempfilepath_2+"file")
                 pass        
 ####
 
