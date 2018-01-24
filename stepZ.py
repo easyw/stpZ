@@ -137,13 +137,16 @@ def export(objs,filename):
             #else:
                 try:
                     os.remove(outfpath)
+                    os.rename(tempnamefpath, outfpath)  
                 except OSError:
                     sayzerr("error on removing "+outfpath+" file")
                     pass        
-            os.rename(tempnamefpath, outfpath)  
+            else:
+                os.rename(tempnamefpath, outfpath)  
             try:
                 os.remove(tempfilepath)
             except OSError:
                 sayzerr("error on removing "+tempfilepath+"file")
                 pass        
 ####
+
