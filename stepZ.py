@@ -172,6 +172,7 @@ def export(objs,filename):
             with builtin.open(tempfilepath, 'rb') as f_in:
                 file_content = f_in.read()
                 #new_f_content = file_content.replace('FreeCAD', 'MCAD')
+                new_f_content = file_content
                 ##workaround utf8 in file name
                 new_f_content = re.sub('FILE_NAME\((.+?).stp\'','FILE_NAME(\''+mkz_string(fname)+'.stp\'',new_f_content, flags=re.MULTILINE) #.encode('utf-8')+'.stp\'',new_f_content, flags=re.MULTILINE)
                 
