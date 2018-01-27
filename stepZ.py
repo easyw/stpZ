@@ -130,22 +130,9 @@ def export(objs,filename):
     
     filepath = os.path.join(basepath,fname) + u'.stp'
     filepath_base  = os.path.join(basepath,fname)
-    
-    ## tempfilepath = os.path.join(tempdir,fname) + u'.stp'
-    ## tempfilepath_2 = os.path.join(tempdir,fname) + u'_2.stp'
-    #tempfilepath_base = os.path.join(tempdir,fname)
-    
+        
     namefpath = os.path.join(basepath,fname)
-    
-    ## tempnamefpath = mkz_string(os.path.join(tempdir,fname)) #.encode('utf-8') #gzip has issue with utf8 in file name header
-    ## #tempnamefpath_2 = os.path.join(tempdir,fname).encode('utf-8') #gzip has issue with utf8 in file name header
-    ## #tempnamefpath = os.path.join(tempdir,'tmpstpZ_file')
-    ## 
-    ## testnamefpath_1 = os.path.join(basepath,fname)+u'_mod.stp'
-    ## testnamefpath_1_base = os.path.join(basepath,fname)
-    ## testnamefpath_2 = os.path.join(basepath,fname)+u'_std.stp'
-    ## testnamefpath_2_base = os.path.join(basepath,fname)
-    
+        
     outfpath = os.path.join(basepath,fname)+u'.stpZ'
     outfpath_stp = os.path.join(basepath,fname)+u'.stp'
     outfpath_base = basepath
@@ -164,42 +151,11 @@ def export(objs,filename):
             QtGui.qApp.restoreOverrideCursor()
             reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+ namefpath+ "'")
         else:
-            # with builtin.open(tempfilepath, 'rb') as f_in, gzip_utf8.open(tempnamefpath, 'wb') as f_out:
-            #     shutil.copyfileobj(f_in, f_out)
-            # with builtin.open(tempfilepath, 'rb') as f_in, builtin.open(testnamefpath_2, 'wb') as f_out:
-            #     shutil.copyfileobj(f_in, f_out)
-            
-            if 0:
-                with builtin.open(testnamefpath_1, 'wb') as f_out:
-                    f_out.write(new_f_content)
-                    f_out.close()
-                    
-                with builtin.open(testnamefpath_1, 'rb') as f_in, gzip_utf8.open(tempnamefpath, 'wb') as f_out:
-                    shutil.copyfileobj(f_in, f_out)
-                    f_in.close()
-                    f_out.close()
-
             with builtin.open(outfpath_stp, 'rb') as f_in:
                 file_content = f_in.read()
                 #new_f_content = file_content.replace('FreeCAD', 'MCAD')
                 new_f_content = file_content
                 f_in.close()
-                #tdir=tempdir.replace('\\','/')
-                ## tdir=tempdir+os.sep
-                ## tdir=tdir.replace('\\','\\\\')
-                ## 
-                ## #print tdir
-                ## #new_f_content = file_content.replace(tdir+u'\\\\', u'')
-                ## #new_f_content = file_content.replace(tdir, u'')
-                ## #print tempdir,' ', tdir
-                ## ##workaround utf8 in file name
-                ## new_f_content = file_content
-                ## #new_f_content = re.sub('FILE_NAME\((.+?).stp\'','FILE_NAME(\''+mkz_string(fname)+'.stp\'',new_f_content, flags=re.MULTILINE) #.encode('utf-8')+'.stp\'',new_f_content, flags=re.MULTILINE)
-                ## subs=
-                ## new_f_content = re.sub('FILE_NAME\((.+?)\''+tdir+'\'','FILE_NAME(\'',new_f_content, flags=re.MULTILINE) #.encode('utf-8')+'.stp\'',new_f_content, flags=re.MULTILINE)
-                
-            #with builtin.open(tempfilepath_2, 'wb') as f_out:
-            #        f_out.write(new_f_content)
 
             with builtin.open(outfpath_stp, 'rb') as f_in, gzip_utf8.open(outfpath_str, 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
@@ -207,35 +163,13 @@ def export(objs,filename):
                 f_out.close()
 
                 
-            #with gzip_utf8.open(testnamefpath_1, 'wb') as f_out:
-            #    f_out.write(new_f_content)
-            
             if os.path.exists(outfpath):
-            #    sayzw("File cannot be compressed because a file with the same name exists '"+ outfpath + "'")
-            #    QtGui.qApp.restoreOverrideCursor()
-            #    reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+outfpath+ "'")
-            #else:
-                #try:
-                    os.remove(outfpath)
-                    os.rename(outfpath_str, outfpath)  
-                    #os.remove(outfpath_str)
-                    os.remove(outfpath_stp)
-                #except OSError:
-                #    sayzerr("error on removing temporary files")
-                    pass        
+                os.remove(outfpath)
+                os.rename(outfpath_str, outfpath)  
+                os.remove(outfpath_stp)
             else:
                 os.rename(outfpath_str, outfpath)
                 os.remove(outfpath_stp)                
 
-            ## try:
-            ##     os.remove(tempfilepath)
-            ## except OSError:
-            ##     sayzerr("error on removing "+tempfilepath+"file")
-            ##     pass        
-            ## try:
-            ##     os.remove(tempfilepath_2)
-            ## except OSError:
-            ##     sayzerr("error on removing "+tempfilepath_2+"file")
-            ##     pass        
 ####
 
