@@ -19,7 +19,7 @@ import PySide
 from PySide import QtGui, QtCore
 import tempfile
 
-___stpZversion___ = "1.3"
+___stpZversion___ = "1.3.1"
 
 try:
     import __builtin__ as builtin #py2
@@ -151,11 +151,13 @@ def export(objs,filename):
             QtGui.qApp.restoreOverrideCursor()
             reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+ namefpath+ "'")
         else:
-            with builtin.open(outfpath_stp, 'rb') as f_in, gzip_utf8.open(outfpath_str, 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
+            with builtin.open(outfpath_stp, 'rb') as f_in:
+                file_content = f_in.read()
+                new_f_content = file_content
                 f_in.close()
-                f_out.close()
-                
+            with gzip_utf8.open(outfpath_str, 'wb') as f_out:
+                f_out.write(new_f_content)
+                f_out.close()    
             if os.path.exists(outfpath):
                 os.remove(outfpath)
                 os.rename(outfpath_str, outfpath)  
