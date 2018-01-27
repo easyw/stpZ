@@ -6,6 +6,7 @@ StpZ
 ----
 
 ### Import Export compressed STEP files '.stpZ' Module for FreeCAD
+#### version 1.3 
 
 
 Example file:
