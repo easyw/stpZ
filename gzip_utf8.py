@@ -5,6 +5,14 @@ but random access is not allowed."""
 
 # based on Andrew Kuchling's minigzip.py distributed with the zlib module
 
+# License: PSF, see https://www.python.org/psf/
+# original file: gzip.py from https://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz
+# changed line:
+# self.fileobj.write(fname + '\000')
+# to:
+# self.fileobj.write(fname.encode('utf-8') + '\000')
+# as a workaround to gzip filenames containing utf-8 characters on win systems 
+
 import struct, sys, time, os
 import zlib
 import io

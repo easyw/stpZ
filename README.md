@@ -23,4 +23,4 @@ Reference @ CAX-if
 License
 -------
 
-[GNU GENERAL PUBLIC LICENSE](https://www.gnu.org/licenses/gpl.html)
+[GNU LESSER GENERAL PUBLIC LICENSE 2+](https://www.gnu.org/licenses/lgpl-2.1.html)

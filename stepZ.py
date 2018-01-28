@@ -5,7 +5,7 @@
 #*  Copyright (c) 2018                                                      *
 #*  Maurice easyw@katamail.com                                              *
 #*                                                                          *
-#*                                                                          *
+#*  License: LGPLv2+                                                        *
 
 # workaround for unicode in gzipping filename
 # OCC7 doesn't support non-ASCII characters at the moment

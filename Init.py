@@ -5,7 +5,7 @@
 #*  Copyright (c) 2018                                                      *
 #*  Maurice easyw@katamail.com                                              *
 #*                                                                          *
-#*                                                                          *
+#*  License: LGPLv2+                                                        *
 
 FreeCAD.addImportType("STEPZ Zip File Type (*.stpZ *.stpz)","stepZ") 
 FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)","stepZ") 
