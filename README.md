@@ -1,6 +1,9 @@
 stpZ: Import and Export compressed STEP files Module for FreeCAD
 ================================================================
-
+```diff
+- It has been merged into FC main repo
+```
+ :smile:
 
 StpZ
 ----
